@@ -2,6 +2,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import time
 import random
+
 real_centroids, number_of_centroids =  [(np.random.randint(0, 10),np.random.randint(0, 10)),
                                         (np.random.randint(0, 10),np.random.randint(0, 10)),
                                         (np.random.randint(0, 10),np.random.randint(0, 10)),
