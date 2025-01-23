@@ -9,6 +9,7 @@ real_centroids, number_of_centroids =  [(np.random.randint(0, 10),np.random.rand
 
 points_per_centroid = 300
 all_points = []
+colors = ['blue', 'green', 'purple', 'orange']
 
 def generate_point_around_centroid(centroid: tuple) -> tuple:
     x_centroid, y_centroid = centroid
@@ -27,10 +28,9 @@ def mean_centroid(points: list) -> tuple:
     return (sum(x_sum) / len(points), sum(y_sum) / len(points))
 
 def kmeans_loop(data_points, k, max_iterations=500):
+    start_time = time.time()
     centroids = random.sample(data_points, k)
     print("Initial Centroids:", centroids)
-
-    start_time = time.time()
 
     for i in range(max_iterations):
         clusters = [[] for _ in range(k)]
@@ -53,6 +53,12 @@ def kmeans_loop(data_points, k, max_iterations=500):
     print("Final Centroids:", centroids)
     return clusters, centroids, end_time - start_time
 
+def kmeans_numpy(data_points, k, max_iterations=500):
+    start_time = time.time()
+    data_np = np.array(data_points)
+    centroids = random.sample(data_points, k)
+    pass
+
 for centroid in real_centroids:
     for _ in range(points_per_centroid):
         all_points.append(generate_point_around_centroid(centroid))
@@ -67,6 +73,8 @@ plt.scatter(centroid_x, centroid_y, s=100, color='red', marker='x', label='Real 
 plt.title('Generated Data Points and Real Centroids')
 plt.xlabel('X')
 plt.ylabel('Y')
+plt.xlim(-2, 12)
+plt.ylim(-2, 12)
 plt.legend()
 plt.grid(True)
 plt.savefig('initial_data.png')
@@ -77,14 +85,22 @@ k_clusters = number_of_centroids
 plain_clusters, plain_centroids, plain_time = kmeans_loop(all_points, k_clusters)
 print(f"Plain Python k-means computation time: {plain_time:.4f} seconds")
 
+for i in range(k_clusters):
+    cluster_x = [p[0] for p in plain_clusters[i]]
+    cluster_y = [p[1] for p in plain_clusters[i]]
+    plt.scatter(cluster_x, cluster_y, s=10, color=colors[i], alpha=0.5, label=f'Cluster {i+1}')
+
 plt.figure(figsize=(8, 8))
 centroid_x = [c[0] for c in plain_centroids]
 centroid_y = [c[1] for c in plain_centroids]
 plt.scatter(centroid_x, centroid_y, s=200, color='red', marker='*', label='K-means Centroids')
 
+
 plt.title('Clusters and Centroids found by Plain Python k-means')
 plt.xlabel('X')
 plt.ylabel('Y')
+plt.xlim(-2, 12)
+plt.ylim(-2, 12)
 plt.legend()
 plt.grid(True)
 plt.savefig('kmeans_plain_clusters.png')
