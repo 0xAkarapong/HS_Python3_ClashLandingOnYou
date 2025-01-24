@@ -98,27 +98,24 @@ k_clusters = number_of_centroids
 plain_clusters, plain_centroids, plain_time = kmeans_loop(all_points, k_clusters)
 print(f"Plain Python k-means computation time: {plain_time:.4f} seconds")
 
+plt.figure(figsize=(8, 8))
+plt.title('Clusters and Centroids found by Plain Python k-means')
 plt.xlabel('X')
 plt.ylabel('Y')
-plt.legend()
-plt.grid(True)
+
 
 for i in range(k_clusters):
     cluster_x = [p[0] for p in plain_clusters[i]]
     cluster_y = [p[1] for p in plain_clusters[i]]
     plt.scatter(cluster_x, cluster_y, s=10, color=colors[i], alpha=0.5, label=f'Cluster {i+1}')
 
-plt.figure(figsize=(8, 8))
+
 centroid_x = [c[0] for c in plain_centroids]
 centroid_y = [c[1] for c in plain_centroids]
 plt.scatter(centroid_x, centroid_y, s=200, color='red', marker='*', label='K-means Centroids')
 
-
-plt.title('Clusters and Centroids found by Plain Python k-means')
-plt.xlabel('X')
-plt.ylabel('Y')
-plt.legend()
 plt.grid(True)
+plt.legend()
 plt.savefig('kmeans_plain_clusters.png')
 plt.show()
 plt.close()
